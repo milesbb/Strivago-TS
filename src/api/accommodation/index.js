@@ -77,7 +77,7 @@ accommodationsRouter.put("/:id", JWTAuthMiddleware, async (req, res, next) => {
     );
 
     if (updatedAccommodation) {
-      res.send(updatedAccommodation);
+      res.status(204).send(updatedAccommodation);
     } else {
       next(
         createHttpError(
