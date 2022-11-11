@@ -17,14 +17,14 @@ const accommodationSchema = {
   description: {
     in: ["body"],
     isString: {
-      errorMessage: "Description is a mandatory field and must be a string/text",
+      errorMessage:
+        "Description is a mandatory field and must be a string/text",
     },
   },
   maxGuests: {
     in: ["body"],
     isInt: {
-      errorMessage:
-        "Max Guests is a mandatory field and must be an integer",
+      errorMessage: "Max Guests is a mandatory field and must be an integer",
     },
   },
   city: {

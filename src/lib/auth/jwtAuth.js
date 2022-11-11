@@ -45,7 +45,7 @@ export const JWTAuthMiddleware = async (req, res, next) => {
           if (requestOptions.method === "GET") {
             next();
           } else {
-            if (requestOptions === "POST") {
+            if (requestOptions.method === "POST") {
               // Checks if posting user is specified user within the new accommodation data in request body
 
               if (req.body.host === req.user._id) {
@@ -67,7 +67,6 @@ export const JWTAuthMiddleware = async (req, res, next) => {
 
               if (accommodation) {
                 if (accommodation.host.toString() === req.user._id) {
-                    
                   next();
                 } else {
                   next(

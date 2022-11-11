@@ -13,7 +13,10 @@ const accommodationsRouter = express.Router();
 
 accommodationsRouter.get("/", JWTAuthMiddleware, async (req, res, next) => {
   try {
-    const accommodations = await AccommodationsModel.find().populate({path: "host", select: "email"});
+    const accommodations = await AccommodationsModel.find().populate({
+      path: "host",
+      select: "email",
+    });
 
     res.status(200).send(accommodations);
   } catch (error) {
@@ -25,7 +28,9 @@ accommodationsRouter.get("/", JWTAuthMiddleware, async (req, res, next) => {
 
 accommodationsRouter.get("/:id", JWTAuthMiddleware, async (req, res, next) => {
   try {
-    const accommodation = await AccommodationsModel.findById(req.params.id).populate({path: "host", select: "email"});
+    const accommodation = await AccommodationsModel.findById(
+      req.params.id
+    ).populate({ path: "host", select: "email" });
 
     if (accommodation) {
       res.status(200).send(accommodation);
@@ -93,19 +98,19 @@ accommodationsRouter.delete(
   JWTAuthMiddleware,
   async (req, res, next) => {
     try {
-        const deletedAccommodation = await AccommodationsModel.findByIdAndDelete(
-            req.params.id,
-        )
-        if (deletedAccommodation) {
-            res.status(204).send()
-        } else {
-            next(
-                createHttpError(
-                  404,
-                  `Accommodation with id ${req.params.id} not found.`
-                )
-              );
-        }
+      const deletedAccommodation = await AccommodationsModel.findByIdAndDelete(
+        req.params.id
+      );
+      if (deletedAccommodation) {
+        res.status(204).send();
+      } else {
+        next(
+          createHttpError(
+            404,
+            `Accommodation with id ${req.params.id} not found.`
+          )
+        );
+      }
     } catch (error) {
       next(error);
     }
