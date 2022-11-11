@@ -3,6 +3,7 @@ import listEndpoints from "express-list-endpoints";
 import cors from "cors";
 import {
   badRequestHandler,
+  forbiddenHandler,
   genericServerErrorHandler,
   notFoundHandler,
   unauthorizedHandler,
@@ -28,6 +29,7 @@ server.use("/accommodations", accommodationsRouter);
 
 server.use(badRequestHandler);
 server.use(unauthorizedHandler);
+server.use(forbiddenHandler);
 server.use(notFoundHandler);
 server.use(genericServerErrorHandler);
 

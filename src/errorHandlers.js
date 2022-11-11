@@ -13,6 +13,14 @@ export const badRequestHandler = (err, req, res, next) => {
       next(err);
     }
   };
+
+  export const forbiddenHandler = (err, req, res, next) => {
+    if (err.status === 403) {
+      res.status(403).send({ success: false, message: err.message });
+    } else {
+      next(err);
+    }
+  };
   
   export const notFoundHandler = (err, req, res, next) => {
     if (err.status === 404) {

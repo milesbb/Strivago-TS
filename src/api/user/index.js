@@ -1,15 +1,40 @@
 import express from "express";
 import createHttpError from "http-errors";
+import { JWTAuthMiddleware } from "../../lib/auth/jwtAuth.js";
 import {
   createTokens,
   verifyRefreshAndCreateNewTokens,
 } from "../../lib/auth/tools.js";
 import UsersModel from "./model.js";
+import AccommodationsModel from "../accommodation/model.js";
 import { checkUsersSchema, checkValidationResult } from "./validation.js";
 
 const usersRouter = express.Router();
 
-// REGISTER USER
+// GET MY ACCOMMODATIONS (HOST ONLY)
+
+usersRouter.get("/me/accommodations", JWTAuthMiddleware, async (req, res, next) => {
+  try {
+    const accommodations = await AccommodationsModel.find({
+      host: req.user._id,
+    });
+
+    if (accommodations) {
+        res.send(accommodations)
+    } else {
+      next(
+        createHttpError(
+          404,
+          `No accommodations hosted by user ${req.user._id} were found.`
+        )
+      );
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+// REGISTER USER (ANY)
 
 usersRouter.post(
   "/register",
@@ -27,7 +52,7 @@ usersRouter.post(
   }
 );
 
-// LOGIN
+// LOGIN (ANY)
 
 usersRouter.post("/login", async (req, res, next) => {
   try {
@@ -46,7 +71,7 @@ usersRouter.post("/login", async (req, res, next) => {
   }
 });
 
-// REFRESH TOKEN
+// REFRESH TOKEN (ANY)
 
 usersRouter.post("/refreshTokens", async (req, res, next) => {
   try {
@@ -57,6 +82,17 @@ usersRouter.post("/refreshTokens", async (req, res, next) => {
     );
 
     res.send({ accessToken, refreshToken });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// GET ME
+
+usersRouter.get("/me", JWTAuthMiddleware, async (req, res, next) => {
+  try {
+    const users = await UsersModel.findById(req.user._id);
+    res.send(users);
   } catch (error) {
     next(error);
   }
