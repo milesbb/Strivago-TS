@@ -65,6 +65,22 @@ accommodationsRouter.post(
 
 accommodationsRouter.put("/:id", JWTAuthMiddleware, async (req, res, next) => {
   try {
+    const updatedAccommodation = await AccommodationsModel.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (updatedAccommodation) {
+      res.send(updatedAccommodation);
+    } else {
+      next(
+        createHttpError(
+          404,
+          `Accommodation with id ${req.params.id} not found.`
+        )
+      );
+    }
   } catch (error) {
     next(error);
   }
@@ -77,6 +93,19 @@ accommodationsRouter.delete(
   JWTAuthMiddleware,
   async (req, res, next) => {
     try {
+        const deletedAccommodation = await AccommodationsModel.findByIdAndDelete(
+            req.params.id,
+        )
+        if (deletedAccommodation) {
+            res.status(204).send()
+        } else {
+            next(
+                createHttpError(
+                  404,
+                  `Accommodation with id ${req.params.id} not found.`
+                )
+              );
+        }
     } catch (error) {
       next(error);
     }
