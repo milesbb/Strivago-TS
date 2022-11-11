@@ -18,17 +18,24 @@ export const JWTAuthMiddleware = async (req, res, next) => {
         role: payload.role,
       };
 
-    //   HOST-ONLY validator
+      //   HOST-ONLY validator
       const requestOptions = { baseUrl: req.originalUrl, method: req.method };
 
       const hostOnlyEndpoints = [
-        { baseUrl: "/user/me/accommodations", method: "GET" },
+        { baseUrl: "/users/me/accommodations", method: "GET" },
         { baseUrl: "/accommodations", method: "POST" },
         { baseUrl: "/accommodations/:id", method: "PUT" },
         { baseUrl: "/accommodations/:id", method: "DELETE" },
       ];
 
-      if (hostOnlyEndpoints.includes(requestOptions)) {
+      const endpointIndex = hostOnlyEndpoints.findIndex(
+        (endpoint) =>
+          endpoint.baseUrl === requestOptions.baseUrl &&
+          endpoint.method === requestOptions.method
+      );
+      const isThisAHostOnlyReq = endpointIndex === -1 ? false : true;
+
+      if (isThisAHostOnlyReq) {
         if (req.user.role === "Host") {
           next();
         } else {
