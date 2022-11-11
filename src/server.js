@@ -8,6 +8,8 @@ import {
   unauthorizedHandler,
 } from "./errorHandlers.js";
 import mongoose from "mongoose";
+import usersRouter from "./api/user/index.js";
+import accommodationsRouter from "./api/accommodation/index.js";
 
 const server = express();
 const port = process.env.PORT || 3001;
@@ -20,6 +22,9 @@ server.use(
 );
 
 server.use(express.json());
+
+server.use("/users", usersRouter);
+server.use("/accommodations", accommodationsRouter);
 
 server.use(badRequestHandler);
 server.use(unauthorizedHandler);
