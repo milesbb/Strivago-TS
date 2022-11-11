@@ -13,7 +13,7 @@ const accommodationsRouter = express.Router();
 
 accommodationsRouter.get("/", JWTAuthMiddleware, async (req, res, next) => {
   try {
-    const accommodations = await AccommodationsModel.find();
+    const accommodations = await AccommodationsModel.find().populate({path: "host", select: "email"});
 
     res.status(200).send(accommodations);
   } catch (error) {
@@ -25,7 +25,7 @@ accommodationsRouter.get("/", JWTAuthMiddleware, async (req, res, next) => {
 
 accommodationsRouter.get("/:id", JWTAuthMiddleware, async (req, res, next) => {
   try {
-    const accommodation = await AccommodationsModel.findById(req.params.id);
+    const accommodation = await AccommodationsModel.findById(req.params.id).populate({path: "host", select: "email"});
 
     if (accommodation) {
       res.status(200).send(accommodation);

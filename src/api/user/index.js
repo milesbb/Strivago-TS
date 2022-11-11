@@ -13,26 +13,30 @@ const usersRouter = express.Router();
 
 // GET MY ACCOMMODATIONS (HOST ONLY)
 
-usersRouter.get("/me/accommodations", JWTAuthMiddleware, async (req, res, next) => {
-  try {
-    const accommodations = await AccommodationsModel.find({
-      host: req.user._id,
-    });
+usersRouter.get(
+  "/me/accommodations",
+  JWTAuthMiddleware,
+  async (req, res, next) => {
+    try {
+      const accommodations = await AccommodationsModel.find({
+        host: req.user._id,
+      }).populate({ path: "host", select: "email" });
 
-    if (accommodations) {
-        res.send(accommodations)
-    } else {
-      next(
-        createHttpError(
-          404,
-          `No accommodations hosted by user ${req.user._id} were found.`
-        )
-      );
+      if (accommodations) {
+        res.send(accommodations);
+      } else {
+        next(
+          createHttpError(
+            404,
+            `No accommodations hosted by user ${req.user._id} were found.`
+          )
+        );
+      }
+    } catch (error) {
+      next(error);
     }
-  } catch (error) {
-    next(error);
   }
-});
+);
 
 // REGISTER USER (ANY)
 

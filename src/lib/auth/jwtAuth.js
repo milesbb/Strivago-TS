@@ -18,6 +18,7 @@ export const JWTAuthMiddleware = async (req, res, next) => {
         role: payload.role,
       };
 
+    //   HOST-ONLY validator
       const requestOptions = { baseUrl: req.originalUrl, method: req.method };
 
       const hostOnlyEndpoints = [
