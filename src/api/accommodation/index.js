@@ -13,6 +13,9 @@ const accommodationsRouter = express.Router();
 
 accommodationsRouter.get("/", JWTAuthMiddleware, async (req, res, next) => {
   try {
+    const accommodations = await AccommodationsModel.find();
+
+    res.status(200).send(accommodations);
   } catch (error) {
     next(error);
   }
@@ -22,6 +25,18 @@ accommodationsRouter.get("/", JWTAuthMiddleware, async (req, res, next) => {
 
 accommodationsRouter.get("/:id", JWTAuthMiddleware, async (req, res, next) => {
   try {
+    const accommodation = await AccommodationsModel.findById(req.params.id);
+
+    if (accommodation) {
+      res.status(200).send(accommodation);
+    } else {
+      next(
+        createHttpError(
+          404,
+          `No accommodation with id ${req.params.id} was found.`
+        )
+      );
+    }
   } catch (error) {
     next(error);
   }
@@ -29,13 +44,17 @@ accommodationsRouter.get("/:id", JWTAuthMiddleware, async (req, res, next) => {
 
 // POST ACCOMMODATION (HOST ONLY)
 
-accommodationsRouter.get(
-  "/:id",
+accommodationsRouter.post(
+  "/",
   JWTAuthMiddleware,
   checkAccommodationSchema,
   checkValidationResult,
   async (req, res, next) => {
     try {
+      const newAccommodation = new AccommodationsModel(req.body);
+      const { _id } = await newAccommodation.save();
+
+      res.status(201).send({ _id });
     } catch (error) {
       next(error);
     }
@@ -44,7 +63,7 @@ accommodationsRouter.get(
 
 // EDIT ACCOMMODATION (HOST ONLY)
 
-accommodationsRouter.get("/:id", JWTAuthMiddleware, async (req, res, next) => {
+accommodationsRouter.put("/:id", JWTAuthMiddleware, async (req, res, next) => {
   try {
   } catch (error) {
     next(error);
@@ -53,11 +72,15 @@ accommodationsRouter.get("/:id", JWTAuthMiddleware, async (req, res, next) => {
 
 // DELETE ACCOMMODATION (HOST ONLY)
 
-accommodationsRouter.get("/:id", JWTAuthMiddleware, async (req, res, next) => {
-  try {
-  } catch (error) {
-    next(error);
+accommodationsRouter.delete(
+  "/:id",
+  JWTAuthMiddleware,
+  async (req, res, next) => {
+    try {
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 export default accommodationsRouter;
