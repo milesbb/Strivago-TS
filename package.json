@@ -1,4 +1,5 @@
 {
+  "main": "server.js",
   "type": "module",
   "scripts": {
     "test": "jest --watchAll",

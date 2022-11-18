@@ -12,7 +12,7 @@ import mongoose from "mongoose";
 import usersRouter from "./api/user/index.js";
 import accommodationsRouter from "./api/accommodation/index.js";
 
-const server = express();
+export const server = express();
 const port = process.env.PORT || 3001;
 
 server.use(
