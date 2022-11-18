@@ -11,8 +11,8 @@ import { checkUsersSchema, checkValidationResult } from "./validation.js";
 import { User } from "./types.js";
 
 interface Tokens {
-  accessToken: string
-  refreshToken: string
+  accessToken: string;
+  refreshToken: string;
 }
 
 const usersRouter = express.Router();
@@ -87,7 +87,8 @@ usersRouter.post("/refreshTokens", async (req, res, next) => {
   try {
     const { currentRefreshToken } = req.body;
     const newTokens = await verifyRefreshAndCreateNewTokens(
-      currentRefreshToken, next
+      currentRefreshToken,
+      next
     )!;
 
     res.send({ ...newTokens });
@@ -98,14 +99,18 @@ usersRouter.post("/refreshTokens", async (req, res, next) => {
 
 // GET ME
 
-usersRouter.get("/me", JWTAuthMiddleware, async (req: UserRequest, res, next) => {
-  try {
-    const users = await UsersModel.findById(req.user?._id);
-    res.send(users);
-  } catch (error) {
-    next(error);
+usersRouter.get(
+  "/me",
+  JWTAuthMiddleware,
+  async (req: UserRequest, res, next) => {
+    try {
+      const users = await UsersModel.findById(req.user?._id);
+      res.send(users);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // GET
 

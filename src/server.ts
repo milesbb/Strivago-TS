@@ -12,7 +12,7 @@ import mongoose from "mongoose";
 import usersRouter from "./api/user/index.js";
 import accommodationsRouter from "./api/accommodation/index.js";
 
-export const server = express();
+const server = express();
 const port = process.env.PORT || 3001;
 
 server.use(
@@ -39,3 +39,5 @@ server.listen(port, () => {
   console.table(listEndpoints(server));
   console.log("Server is up and running on port " + port);
 });
+
+export default server

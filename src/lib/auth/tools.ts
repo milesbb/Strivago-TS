@@ -51,7 +51,7 @@ export const verifyRefreshToken = (
     jwt.verify(
       accessToken,
       process.env.REFRESH_SECRET!,
-      { expiresIn: "1 week" },
+      { expiresIn: "1 week" }
       // (err: string, originalPayload: TokenPayload) => {
       //   if (err) reject(err);
       //   else resolve(originalPayload as TokenPayload);

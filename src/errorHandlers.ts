@@ -1,4 +1,4 @@
-import { ErrorRequestHandler } from "express"
+import { ErrorRequestHandler } from "express";
 
 export const badRequestHandler: ErrorRequestHandler = (err, req, res, next) => {
   if (err.status === 400) {
@@ -8,7 +8,12 @@ export const badRequestHandler: ErrorRequestHandler = (err, req, res, next) => {
   }
 };
 
-export const unauthorizedHandler: ErrorRequestHandler = (err, req, res, next) => {
+export const unauthorizedHandler: ErrorRequestHandler = (
+  err,
+  req,
+  res,
+  next
+) => {
   if (err.status === 401) {
     res.status(401).send({ message: err.message });
   } else {
@@ -32,7 +37,12 @@ export const notFoundHandler: ErrorRequestHandler = (err, req, res, next) => {
   }
 };
 
-export const genericServerErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
+export const genericServerErrorHandler: ErrorRequestHandler = (
+  err,
+  req,
+  res,
+  next
+) => {
   console.log("ERR: ", err);
   res.status(500).send({
     message: "There was an error with the server, please try again later!",
