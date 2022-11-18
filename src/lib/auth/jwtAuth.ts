@@ -5,10 +5,14 @@ import { UserDocument } from "../../api/user/types.js";
 import { Request, RequestHandler } from "express";
 
 export interface UserRequest extends Request {
-  user?: Partial<UserDocument>
+  user?: Partial<UserDocument>;
 }
 
-export const JWTAuthMiddleware: RequestHandler = async (req: UserRequest, res, next) => {
+export const JWTAuthMiddleware: RequestHandler = async (
+  req: UserRequest,
+  res,
+  next
+) => {
   if (!req.headers.authorization) {
     next(
       createHttpError(

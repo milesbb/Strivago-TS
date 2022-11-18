@@ -7,12 +7,13 @@ import {
   checkValidationResult,
 } from "./validation.js";
 
-const accommodationsRouter = express.Router();
+const accommodationsRouter = express.Router(); 
 
 // GET ALL (BOTH)
 
 accommodationsRouter.get("/", JWTAuthMiddleware, async (req, res, next) => {
   try {
+
     const accommodations = await AccommodationsModel.find().populate({
       path: "host",
       select: "email",

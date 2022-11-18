@@ -86,7 +86,6 @@ usersRouter.post("/login", async (req, res, next) => {
 usersRouter.post("/refreshTokens", async (req, res, next) => {
   try {
     const { currentRefreshToken } = req.body;
-
     const newTokens = await verifyRefreshAndCreateNewTokens(
       currentRefreshToken, next
     )!;
@@ -101,7 +100,7 @@ usersRouter.post("/refreshTokens", async (req, res, next) => {
 
 usersRouter.get("/me", JWTAuthMiddleware, async (req: UserRequest, res, next) => {
   try {
-    const users = await UsersModel.findById(req.user!._id);
+    const users = await UsersModel.findById(req.user?._id);
     res.send(users);
   } catch (error) {
     next(error);
