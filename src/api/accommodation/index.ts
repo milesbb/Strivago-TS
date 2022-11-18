@@ -1,6 +1,6 @@
-import express from "express";
+import express, { NextFunction, Response } from "express";
 import createHttpError from "http-errors";
-import { JWTAuthMiddleware } from "../../lib/auth/jwtAuth.js";
+import { JWTAuthMiddleware, UserRequest } from "../../lib/auth/jwtAuth.js";
 import AccommodationsModel from "./model.js";
 import {
   checkAccommodationSchema,
@@ -54,7 +54,7 @@ accommodationsRouter.post(
   JWTAuthMiddleware,
   checkAccommodationSchema,
   checkValidationResult,
-  async (req, res, next) => {
+  async (req: UserRequest, res: Response, next: NextFunction) => {
     try {
       const newAccommodation = new AccommodationsModel(req.body);
       const { _id } = await newAccommodation.save();

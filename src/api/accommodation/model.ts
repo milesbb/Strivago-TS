@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { AccommodationDocument, AccommodationsModel } from "./types";
 
 const { Schema, model } = mongoose;
 
@@ -15,4 +16,7 @@ const accommodationSchema = new Schema(
   }
 );
 
-export default model("Accommodation", accommodationSchema);
+export default model<AccommodationDocument, AccommodationsModel>(
+  "Accommodation",
+  accommodationSchema
+);

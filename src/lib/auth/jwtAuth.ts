@@ -1,8 +1,14 @@
 import createHttpError from "http-errors";
 import { verifyAccessToken } from "./tools.js";
 import AccommodationsModel from "../../api/accommodation/model.js";
+import { UserDocument } from "../../api/user/types.js";
+import { Request, RequestHandler } from "express";
 
-export const JWTAuthMiddleware = async (req, res, next) => {
+export interface UserRequest extends Request {
+  user?: Partial<UserDocument>
+}
+
+export const JWTAuthMiddleware: RequestHandler = async (req: UserRequest, res, next) => {
   if (!req.headers.authorization) {
     next(
       createHttpError(

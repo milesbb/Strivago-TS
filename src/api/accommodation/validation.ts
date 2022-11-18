@@ -1,7 +1,8 @@
-import { checkSchema, validationResult } from "express-validator";
+import { RequestHandler } from "express";
+import { checkSchema, Schema, validationResult } from "express-validator";
 import createHttpError from "http-errors";
 
-const accommodationSchema = {
+const accommodationSchema: Schema = {
   name: {
     in: ["body"],
     isString: {
@@ -37,7 +38,7 @@ const accommodationSchema = {
 
 export const checkAccommodationSchema = checkSchema(accommodationSchema);
 
-export const checkValidationResult = (req, res, next) => {
+export const checkValidationResult: RequestHandler = (req, res, next) => {
   const errorsList = validationResult(req);
   if (!errorsList.isEmpty()) {
     next(
