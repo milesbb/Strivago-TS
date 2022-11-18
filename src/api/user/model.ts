@@ -45,7 +45,6 @@ userSchema.static("checkCredentials", async function (email, password) {
 
   if (user) {
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log("is Match?", isMatch);
     if (isMatch) {
       return user;
     } else {

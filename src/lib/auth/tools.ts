@@ -51,23 +51,20 @@ export const verifyRefreshToken = (
     jwt.verify(
       accessToken,
       process.env.REFRESH_SECRET!,
-      { expiresIn: "1 week" }
-      // (err: string, originalPayload: TokenPayload) => {
-      //   if (err) reject(err);
-      //   else resolve(originalPayload as TokenPayload);
-      // }
+      { expiresIn: "1 week" },
+      (err, originalPayload) => {
+        if (err) reject(err);
+        else resolve(originalPayload as TokenPayload);
+      }
     )
   );
 
 export const createTokens = async (user1: any) => {
-  console.log("creating tokens");
   const accessToken = await createAccessToken({
     _id: user1._id,
     role: user1.role,
   });
-  console.log("accessToken", accessToken);
   const refreshToken = await createRefreshToken({ _id: user1._id });
-  console.log("refreshToken", refreshToken);
   user1.refreshToken = refreshToken;
 
   await user1.save();

@@ -33,11 +33,13 @@ server.use(forbiddenHandler);
 server.use(notFoundHandler);
 server.use(genericServerErrorHandler);
 
-mongoose.connect(process.env.MONGO_DB_CONNECTION_STRING!);
+if (process.env.MONGO_DB_CONNECTION_STRING) {
+  mongoose.connect(process.env.MONGO_DB_CONNECTION_STRING);
+}
 
 server.listen(port, () => {
   console.table(listEndpoints(server));
   console.log("Server is up and running on port " + port);
 });
 
-export default server
+export default server;
